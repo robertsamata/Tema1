@@ -1,0 +1,84 @@
+-- Person table
+CREATE TABLE Person (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255),
+    phoneNumber VARCHAR(20),
+    emailAddress VARCHAR(255)
+);
+
+-- Address table
+CREATE TABLE Address (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    personId INT,
+    street VARCHAR(255),
+    city VARCHAR(255),
+    state VARCHAR(255),
+    postalCode VARCHAR(20),
+    country VARCHAR(255),
+    isValid BOOLEAN,
+    label VARCHAR(255),
+    FOREIGN KEY (personId) REFERENCES Person(id)
+);
+
+-- Student table
+CREATE TABLE Student (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    personId INT,
+    studentNumber INT,
+    averageMark INT,
+    isEligibleToEnroll BOOLEAN,
+    seminarsTaken INT,
+    FOREIGN KEY (personId) REFERENCES Person(id)
+);
+
+-- Professor table
+CREATE TABLE Professor (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    personId INT,
+    salary INT,
+    staffNumber INT,
+    yearsOfService INT,
+    numberOfClasses INT,
+    FOREIGN KEY (personId) REFERENCES Person(id)
+);
+-- Inserting values into Person table
+INSERT INTO Person (id, name, phoneNumber, emailAddress) VALUES
+    (5, 'Alice Smith', '555-1234', 'alice@example.com'),
+    (6,'Bob Johnson', '555-5678', 'bob@example.com');
+    (7,'Robert', '555-7678', 'rob@example.com');
+
+-- Inserting values into Address table
+INSERT INTO Address (personId, street, city, state, postalCode, country, isValid, label) VALUES
+    (5, '123 Oak St', 'Springfield', 'IL', '12345', 'USA', true, 'Home'),
+    (6, '456 Pine Ave', 'Cityville', 'CA', '67890', 'USA', true, 'Office');
+
+-- Inserting values into Student table
+INSERT INTO Student (personId, studentNumber, averageMark, isEligibleToEnroll, seminarsTaken) VALUES
+    (5, 12345, 85, true, 4),
+    (6, 67890, 72, false, 2);
+
+-- Inserting values into Professor table
+INSERT INTO Professor (personId, salary, staffNumber, yearsOfService, numberOfClasses) VALUES
+    (7, 80000, 987, 15, 3);
+
+-- SELECT queries
+SELECT * FROM Student WHERE averageMark > 80;
+SELECT * FROM Professor WHERE yearsOfService >= 10;
+
+-- INSERT queries
+INSERT INTO Person (name, phoneNumber, emailAddress) VALUES ('John Doe', '123-456-7890', 'john@example.com');
+INSERT INTO Address (personId, street, city, state, postalCode, country, isValid, label) VALUES (7, '123 Main St', 'Cityville', 'CA', '12345', 'USA', true, 'Home');
+
+-- UPDATE queries
+UPDATE Student SET isEligibleToEnroll = true WHERE id = 1;
+UPDATE Address SET isValid = false WHERE personId = 1;
+
+-- DELETE queries
+DELETE FROM Student WHERE seminarsTaken < 5;
+DELETE FROM Professor WHERE yearsOfService > 20;
+
+-- INNER JOIN
+SELECT Person.name, Student.averageMark FROM Person INNER JOIN Student ON Person.id = Student.personId;
+
+-- OUTER JOIN
+SELECT Person.name, Professor.salary FROM Person LEFT JOIN Professor ON Person.id = Professor.personId;
